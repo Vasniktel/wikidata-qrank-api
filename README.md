@@ -2,8 +2,8 @@
 API for selectively querying Wikidata [QRank ranking](https://github.com/brawer/wikidata-qrank)
 
 ## Description
-This is a simple Flask API for selectively querying ranks for wikidata entities. The API uses data [wikidata-qrank](https://github.com/brawer/wikidata-qrank).
-It works by periodically querying data from wikidata-qrank and providing it as an API.
+This is a simple REST API for selectively querying ranking data for wikidata entities. The API uses [wikidata-qrank](https://github.com/brawer/wikidata-qrank).
+It works by periodically fetching data from wikidata-qrank and providing it as an API.
 
 ## Configuration
 Configurations are provided via the following environment variables:
@@ -13,7 +13,7 @@ Configurations are provided via the following environment variables:
 
 ## Endpoints
 ### `/get`
-Accepts `GET` requests with wikidata ids to get rankings for. Example usage:
+Accepts `GET` requests with wikidata ids to get rankings for. Invalid ids are ignored. Example usage:
 ```sh
 $ curl "localhost:8000/get?qid=Q1&qid=Q2&qid=Q0"
 {"Q1":1,"Q2":2}
