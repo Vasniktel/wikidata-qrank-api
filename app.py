@@ -122,4 +122,4 @@ scheduler.enter(REFRESH_DELAY_MINUTES * 60, 0, refresh_data_job)
 
 if __name__ == "__main__":
     Thread(target=scheduler.run, daemon=True).start()
-    app.run(port=PORT)
+    app.run(host="0.0.0.0", port=PORT)
