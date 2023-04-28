@@ -54,18 +54,17 @@ def download_data(*, force=False):
             # No new data.
             return False
 
-        with tempfile.NamedTemporaryFile("wb", delete=False) as tmp:
-            for chunk in resp:
-                tmp.write(chunk)
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            tmp_file = Path(tmp_dir) / QRANK_FILE_NAME
+            with tmp_file.open("wb") as f:
+                for chunk in resp:
+                    f.write(chunk)
 
-        try:
-            shutil.move(tmp.name, QRANK_FILE_PATH)
+            shutil.move(tmp_file, QRANK_FILE_PATH)
             etag = resp.headers["etag"]
             json.dump({"etag": etag}, QRANK_METADATA_PATH.open("w"))
             app.logger.info(f"Finished file download ({etag=})")
             return True
-        finally:
-            Path(tmp.name).unlink(missing_ok=True)
 
 
 refresh_lock = Lock()
