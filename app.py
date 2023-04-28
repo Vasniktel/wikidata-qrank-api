@@ -97,8 +97,10 @@ def get_qrank():
 def refresh_data():
     app.logger.info("Running manual refresh")
 
+    force = flask.request.args.get("force") == "true"
+
     global rank_data
-    if result := refresh_data_impl(force=True):
+    if result := refresh_data_impl(force=force):
         rank_data = result
         return flask.jsonify(success=True)
     return flask.jsonify(success=False)
