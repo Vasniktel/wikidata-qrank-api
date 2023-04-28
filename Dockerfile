@@ -17,4 +17,4 @@ ENV PATH="/opt/venv/bin:$PATH"
 
 COPY app.py .
 
-CMD exec python app.py
+ENTRYPOINT ["python", "app.py"]
