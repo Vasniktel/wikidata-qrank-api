@@ -8,6 +8,7 @@ on:
       - app.py
       - requirements.txt
       - Dockerfile
+      - .github/workflows/publish.yml
 
 env:
   REGISTRY: ghcr.io
