@@ -20,6 +20,8 @@ DOWNLOAD_URL = f"https://qrank.wmcloud.org/download/{QRANK_FILE_NAME}"
 QRANK_FILE_PATH = DATA_DIR / QRANK_FILE_NAME
 QRANK_METADATA_PATH = DATA_DIR / "qrank_metadata.json"
 
+DATA_DIR.mkdir(parents=True, exist_ok=True)
+
 
 app = flask.Flask(__name__)
 app.logger.setLevel("INFO")
