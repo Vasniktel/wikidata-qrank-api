@@ -35,7 +35,10 @@ def load_rank_data():
         return None
 
     with gzip.open(QRANK_FILE_PATH, "rt", encoding="utf-8") as f:
-        return {el["Entity"]: int(el["QRank"]) for el in csv.DictReader(f)}
+        return {
+            int(el["Entity"].removeprefix("Q")): int(el["QRank"])
+            for el in csv.DictReader(f)
+        }
 
 
 def download_data(*, force=False):
@@ -92,7 +95,15 @@ rank_data = load_rank_data() or refresh_data_impl(force=True, timeout=-1)
 def get_qrank():
     qids = flask.request.args.getlist("qid")
     assert rank_data is not None
-    return flask.jsonify({el: rank_data[el] for el in qids if el in rank_data})
+    results = {}
+    for el in qids:
+        try:
+            key = int(el.removeprefix("Q"))
+            if key in rank_data:
+                results[el] = rank_data[key]
+        except ValueError:
+            pass
+    return flask.jsonify(results)
 
 
 @app.put("/refresh")
