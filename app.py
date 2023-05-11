@@ -35,10 +35,7 @@ def load_rank_data():
         return None
 
     with gzip.open(QRANK_FILE_PATH, "rt", encoding="utf-8") as f:
-        return {
-            int(el["Entity"].removeprefix("Q")): int(el["QRank"])
-            for el in csv.DictReader(f)
-        }
+        return {int(el["Entity"][1:]): int(el["QRank"]) for el in csv.DictReader(f)}
 
 
 def download_data(*, force=False):
@@ -97,8 +94,11 @@ def get_qrank():
     assert rank_data is not None
     results = {}
     for el in qids:
+        if not el.startswith("Q"):
+            continue
+
         try:
-            key = int(el.removeprefix("Q"))
+            key = int(el[1:])
             if key in rank_data:
                 results[el] = rank_data[key]
         except ValueError:
